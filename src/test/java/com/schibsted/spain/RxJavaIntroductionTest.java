@@ -45,7 +45,7 @@ public class RxJavaIntroductionTest {
 
     @Test
     public void testIntervalObservable() throws InterruptedException {
-        Observable<Long> observable = Observable.interval(1, TimeUnit.SECONDS);
+        Observable<Long> observable = Observable.interval(1, TimeUnit.SECONDS).take(6);
 
         Observer<Long> observerLong = new Observer<Long>() {
             @Override
@@ -69,7 +69,13 @@ public class RxJavaIntroductionTest {
 
         System.out.println("Subscribed");
 
-        longTestSubscriber.awaitTerminalEvent(6, TimeUnit.SECONDS);
+        longTestSubscriber.awaitTerminalEvent();
 
+    }
+
+    @Test
+    public void testTake() {
+        Observable.just("Patata").take(4).subscribe(System.out::println);
+        Observable.just("Patata", "Jamon", "Aceitunas", "Ensaladilla russa", "Berberechos").take(4).subscribe(System.out::println);
     }
 }
