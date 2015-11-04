@@ -13,65 +13,63 @@ import static org.junit.Assert.assertEquals;
 
 public class RxJavaIntroductionTest {
 
-  @Test
-  public void testItWorks() throws Exception {
-    int value = Observable.just(4)
-        .toBlocking().single();
+    @Test
+    public void testItWorks() throws Exception {
+        int value = Observable.just(4)
+                .toBlocking().single();
 
-    assertEquals(3,value);
-  }
+        assertEquals(3, value);
+    }
 
-  @Test
-  public void testNowObservable() throws Exception{
-    Observer<Date> observer = new Observer<Date>() {
-      @Override
-      public void onCompleted() {
-          System.out.println("onComplete");
-      }
+    @Test
+    public void testNowObservable() throws Exception {
+        Observer<Date> observer = new Observer<Date>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("onComplete");
+            }
 
-      @Override
-      public void onError(Throwable e) {
-        e.printStackTrace();
-      }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
 
-      @Override
-      public void onNext(Date date) {
-        System.out.println(date);
-      }
-    };
+            @Override
+            public void onNext(Date date) {
+                System.out.println(date);
+            }
+        };
 
-    Observable.just(new Date()).subscribe(observer);
-  }
+        Observable.just(new Date()).subscribe(observer);
+    }
 
-  @Test
-  public void testIntervalObservable() throws InterruptedException {
-    Observable<Long> observable = Observable.interval(1, TimeUnit.SECONDS);
+    @Test
+    public void testIntervalObservable() throws InterruptedException {
+        Observable<Long> observable = Observable.interval(1, TimeUnit.SECONDS);
 
-    Observer<Long> observerLong = new Observer<Long>() {
-      @Override
-      public void onCompleted() {
-        System.out.println("onComplete");
-      }
+        Observer<Long> observerLong = new Observer<Long>() {
+            @Override
+            public void onCompleted() {
+                System.out.println("onComplete");
+            }
 
-      @Override
-      public void onError(Throwable e) {
+            @Override
+            public void onError(Throwable e) {
 
-      }
+            }
 
-      @Override
-      public void onNext(Long aLong) {
-        System.out.println(aLong);
-      }
-    };
+            @Override
+            public void onNext(Long aLong) {
+                System.out.println(aLong);
+            }
+        };
 
-    TestSubscriber<Long> longTestSubscriber = new TestSubscriber<Long>(observerLong);
-    observable.subscribe(longTestSubscriber);
+        TestSubscriber<Long> longTestSubscriber = new TestSubscriber<Long>(observerLong);
+        observable.subscribe(longTestSubscriber);
 
-    System.out.println("Subscribed");
+        System.out.println("Subscribed");
 
-    longTestSubscriber.awaitTerminalEvent(6, TimeUnit.SECONDS);
+        longTestSubscriber.awaitTerminalEvent(6, TimeUnit.SECONDS);
 
-
-
-  }
+    }
 }
