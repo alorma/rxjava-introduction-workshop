@@ -3,8 +3,10 @@ package com.schibsted.spain;
 import org.junit.Test;
 import rx.Observable;
 import rx.Observer;
+import rx.observers.TestSubscriber;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -39,5 +41,37 @@ public class RxJavaIntroductionTest {
     };
 
     Observable.just(new Date()).subscribe(observer);
+  }
+
+  @Test
+  public void testIntervalObservable() throws InterruptedException {
+    Observable<Long> observable = Observable.interval(1, TimeUnit.SECONDS);
+
+    Observer<Long> observerLong = new Observer<Long>() {
+      @Override
+      public void onCompleted() {
+        System.out.println("onComplete");
+      }
+
+      @Override
+      public void onError(Throwable e) {
+
+      }
+
+      @Override
+      public void onNext(Long aLong) {
+        System.out.println(aLong);
+      }
+    };
+
+    TestSubscriber<Long> longTestSubscriber = new TestSubscriber<Long>(observerLong);
+    observable.subscribe(longTestSubscriber);
+
+    System.out.println("Subscribed");
+
+    longTestSubscriber.awaitTerminalEvent(6, TimeUnit.SECONDS);
+
+
+
   }
 }
